@@ -31,7 +31,16 @@ class SideBar extends Component {
             <Text>Home</Text>
           </ListItem>
           <ListItem button onPress={() => this.navigateTo('blankPage')} >
-            <Text>Blank Page</Text>
+            <Text>Active</Text>
+          </ListItem>
+          <ListItem button onPress={() => this.navigateTo('blankPage')} >
+            <Text>My</Text>
+          </ListItem>
+          <ListItem button onPress={() => this.navigateTo('blankPage')} >
+            <Text>Liked</Text>
+          </ListItem>
+          <ListItem button onPress={() => this.navigateTo('blankPage')} >
+            <Text>Trashed</Text>
           </ListItem>
         </List>
       </Content>

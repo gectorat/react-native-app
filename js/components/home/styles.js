@@ -11,6 +11,11 @@ module.exports = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  noTextView: {
+    flex: 1,
+    backgroundColor:'#ebeef0',
+    alignItems: 'center',
+  },
   text: {
     fontSize: 20,
     marginBottom: 15,
