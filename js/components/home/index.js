@@ -10,18 +10,31 @@ import {
   Content,
   Text,
   Button,
-  Card,
-  CardItem,
-  DeckSwiper
   Icon } from 'native-base';
 import { Grid, Row, Col } from 'react-native-easy-grid';
-
+import SwipeCards from 'react-native-swipe-cards';
 import { openDrawer, closeDrawer } from '../../actions/drawer';
 import { replaceRoute, replaceOrPushRoute } from '../../actions/route';
 import { setIndex } from '../../actions/list';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
-
+const Cards = [
+  {text: 'Tomato', backgroundColor: 'red'},
+  {text: 'Aubergine', backgroundColor: 'purple'},
+  {text: 'Courgette', backgroundColor: 'green'},
+  {text: 'Blueberry', backgroundColor: 'blue'},
+  {text: 'Umm...', backgroundColor: 'cyan'},
+  {text: 'orange', backgroundColor: 'orange'},
+]
+let Card = React.createClass({
+  render() {
+    return (
+      <View style={[styles.card, {backgroundColor: this.props.backgroundColor}]}>
+        <Text>{this.props.text}</Text>
+      </View>
+    )
+  }
+})
 class Home extends Component {
 
   static propTypes = {
@@ -37,7 +50,15 @@ class Home extends Component {
   constructor(props) {
     super();
     this.dismissListItem = this.dismissListItem.bind(this);
-    this.state = { list: props.list };
+    this.state = { list: props.list, cards: Cards };
+  }
+
+  handleYup (card) {
+    console.log(`YES`)
+  }
+
+  handleNope (card) {
+    console.log(`NO`)
   }
 
   replaceRoute(route) {
@@ -85,34 +106,20 @@ class Home extends Component {
                 </Col>
               </Row>
             </Grid> : null}
-          {this.state.list.map((item, i) =>
-          <Card key={i}>
-            <CardItem cardBody>
-              <Image style={{ width:128, height:128 }} source={{ uri:'https://placehold.it/128.png' }}></Image>
-              <Text>{item}</Text>
-            </CardItem>
-            <CardItem>
-              <Button
-                style={{marginRight:10}}
-                onPress={() => {}}>
-                Ok
-              </Button>
-              <Button
-                style={{marginRight:10}}
-                onPress={() => {
-                  this.dismissListItem(i);
-                }}>
-                Dismiss
-              </Button>
-            </CardItem>
-          </Card>
-          )}
+          <SwipeCards
+            cards={this.state.cards}
+
+            renderCard={(cardData) => <Card {...cardData} />}
+            renderNoMoreCards={() => <NoMoreCards />}
+
+            handleYup={this.handleYup}
+            handleNope={this.handleNope}
+          />
         </Content>
       </Container>
     );
   }
 }
-
 function bindAction(dispatch) {
   return {
     openDrawer: () => dispatch(openDrawer()),

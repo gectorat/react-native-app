@@ -24,4 +24,11 @@ module.exports = StyleSheet.create({
   mt: {
     marginTop: 20,
   },
+  card: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 300,
+    height: 300,
+  }
 });
