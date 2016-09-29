@@ -15,15 +15,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: null,
-    height: null,
+    height: null
   },
   modal: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   modal1: {
-    height: 300,
-
+    height: 300
   },
 });
 

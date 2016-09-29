@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import App from './App';
+import firebase from 'firebase';
+import firebaseConfig from './firebase.config';
 import configureStore from './configureStore';
 
 function setup():React.Component {
@@ -9,6 +11,9 @@ function setup():React.Component {
 
     constructor() {
       super();
+
+      firebase.initializeApp(firebaseConfig);
+      console.log(firebase.app());
       this.state = {
         isLoading: false,
         store: configureStore(() => this.setState({ isLoading: false })),
@@ -22,7 +27,8 @@ function setup():React.Component {
         </Provider>
       );
     }
-    }
+  }
+
   return Root;
 }
 

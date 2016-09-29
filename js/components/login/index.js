@@ -2,11 +2,12 @@
 import React, { Component } from 'react';
 import { Image, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Content, InputGroup, Input, Button, Icon, View } from 'native-base';
+import { Container, Content, InputGroup, Input, Button, Icon, Text, View } from 'native-base';
 
 import { replaceRoute } from '../../actions/route';
 import { setUser } from '../../actions/user';
 import styles from './styles';
+import firebase from 'firebase';
 
 const background = require('../../../images/shadow.png');
 
@@ -20,7 +21,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '@ciklum.com',
+      name: 'zhs@ciklum.com',
+      password: 'password'
     };
     this.validateForm = this.validateForm.bind(this);
   }
@@ -32,8 +34,31 @@ class Login extends Component {
   validateForm(e) {
     if (this.state.name === '') return;
     let domain = this.state.name.split('@')[1]
-    if(domain === 'ciklum.com') {
-      this.replaceRoute('home')
+    if (domain === 'ciklum.com') {
+      firebase.auth()
+      .signInWithEmailAndPassword(this.state.name, this.state.password)
+      .then((user)=> {
+        if (user.emailVerified) {
+          this.replaceRoute('home');
+          this.setState({ verificationPending: false });
+        } else if(this.state.verificationPending){
+          Alert.alert('Email Verification', 'Please check your email to complete registration process');
+        } else {
+          Alert.alert(
+            'Alert Title',
+            'Account isn\'t verified. Click ok to send verification email ',
+            [
+              {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+              {text: 'OK', onPress: () => {
+                console.log('OK Pressed');
+                user.sendEmailVerification();
+                this.setState({verificationPending: true})
+               }},
+            ]
+          );
+        }
+      })
+      // this.replaceRoute('home')
     } else {
       Alert.alert('Unable to login', 'Your account cannot be used');
       this.setState({name:''});
@@ -41,7 +66,6 @@ class Login extends Component {
   }
 
   replaceRoute(route) {
-    this.setUser(this.state.name);
     this.props.replaceRoute(route);
   }
 
@@ -54,15 +78,25 @@ class Login extends Component {
               <View style={styles.bg}>
                 <InputGroup style={styles.input}>
                   <Icon name="ios-person" />
-                  <Input placeholder="EMAIL" value={this.state.name} onChangeText={name => this.setState({ name })} />
+                  <Input placeholder="EMAIL"
+                    value={this.state.name}
+                    onChangeText={name => this.setState({ name })} />
                 </InputGroup>
                 <InputGroup style={styles.input}>
                   <Icon name="ios-unlock-outline" />
                   <Input
                     placeholder="PASSWORD"
+                    value={this.state.password}
+                    onChangeText={password => this.setState({ password })}
                     secureTextEntry
                   />
                 </InputGroup>
+                {this.state.verificationPending ?
+                  <InputGroup style={styles.input}>
+                    <Icon name="ios-unlock-outline" />
+                    <Text>Check your email for confirmation link, then try login again</Text>
+                  </InputGroup>
+                : null }
                 <Button style={styles.btn} onPress={this.validateForm}>
                   Login
                 </Button>

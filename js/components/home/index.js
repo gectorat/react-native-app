@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { TouchableOpacity, Image } from 'react-native';
+import { TouchableOpacity, Image, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import {
   Container,
@@ -10,12 +10,11 @@ import {
   Content,
   Text,
   Button,
-  Card,
-  CardItem,
-  DeckSwiper
+  List,
+  ListItem,
   Icon } from 'native-base';
-import { Grid, Row, Col } from 'react-native-easy-grid';
 
+import NoItems from '../common/NoItemContentMsg';
 import { openDrawer, closeDrawer } from '../../actions/drawer';
 import { replaceRoute, replaceOrPushRoute } from '../../actions/route';
 import { setIndex } from '../../actions/list';
@@ -66,6 +65,9 @@ class Home extends Component {
           <Button transparent onPress={() => this.replaceRoute('login')}>
             <Icon name="ios-power" />
           </Button>
+          <Button transparent onPress={() => this.navigateTo('newItem')}>
+            <Icon name="ios-add-circle-outline" />
+          </Button>
 
           <Title>{(this.props.name) ? this.props.name : 'Home'}</Title>
 
@@ -75,37 +77,13 @@ class Home extends Component {
         </Header>
         <Content>
           {this.state.list.length === 0 ?
-            <Grid>
-              <Row>
-                <Col height={300}></Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Button block transparent warning>No Items</Button>
-                </Col>
-              </Row>
-            </Grid> : null}
+            <NoItems>Empty</NoItems> : null}
           {this.state.list.map((item, i) =>
-          <Card key={i}>
-            <CardItem cardBody>
-              <Image style={{ width:128, height:128 }} source={{ uri:'https://placehold.it/128.png' }}></Image>
+          <List key={i}>
+            <ListItem button onPress={()=>Alert.alert('Text',item)}>
               <Text>{item}</Text>
-            </CardItem>
-            <CardItem>
-              <Button
-                style={{marginRight:10}}
-                onPress={() => {}}>
-                Ok
-              </Button>
-              <Button
-                style={{marginRight:10}}
-                onPress={() => {
-                  this.dismissListItem(i);
-                }}>
-                Dismiss
-              </Button>
-            </CardItem>
-          </Card>
+            </ListItem>
+          </List>
           )}
         </Content>
       </Container>
