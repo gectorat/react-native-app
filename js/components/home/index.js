@@ -12,7 +12,7 @@ import {
   Button,
   Icon } from 'native-base';
 import { Grid, Row, Col } from 'react-native-easy-grid';
-import SwipeCards from 'react-native-swipe-cards';
+import SwipeCards from '../swipeCards/swiper';
 import { openDrawer, closeDrawer } from '../../actions/drawer';
 import { replaceRoute, replaceOrPushRoute } from '../../actions/route';
 import { setIndex } from '../../actions/list';
