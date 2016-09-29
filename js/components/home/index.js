@@ -10,6 +10,8 @@ import {
   Content,
   Text,
   Button,
+  List,
+  ListItem,
   Icon } from 'native-base';
 import NoItems from '../common/NoItemContentMsg';
 import { openDrawer, closeDrawer } from '../../actions/drawer';
@@ -17,23 +19,8 @@ import { replaceRoute, replaceOrPushRoute } from '../../actions/route';
 import { setIndex } from '../../actions/list';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
-const Cards = [
-  {text: 'Tomato', backgroundColor: 'red'},
-  {text: 'Aubergine', backgroundColor: 'purple'},
-  {text: 'Courgette', backgroundColor: 'green'},
-  {text: 'Blueberry', backgroundColor: 'blue'},
-  {text: 'Umm...', backgroundColor: 'cyan'},
-  {text: 'orange', backgroundColor: 'orange'},
-]
-let Card = React.createClass({
-  render() {
-    return (
-      <View style={[styles.card, {backgroundColor: this.props.backgroundColor}]}>
-        <Text>{this.props.text}</Text>
-      </View>
-    )
-  }
-})
+import Swiper from '../swipeCards/swiper';
+import Card from '../swipeCards/card';
 class Home extends Component {
 
   static propTypes = {
@@ -49,7 +36,7 @@ class Home extends Component {
   constructor(props) {
     super();
     this.dismissListItem = this.dismissListItem.bind(this);
-    this.state = { list: props.list, cards: Cards };
+    this.state = { list: props.list };
   }
 
   handleYup (card) {
@@ -97,15 +84,14 @@ class Home extends Component {
           </Button>
         </Header>
         <Content>
-          {this.state.list.length === 0 ?
-            <NoItems>Empty</NoItems> : null}
-          {this.state.list.map((item, i) =>
-          <List key={i}>
-            <ListItem button onPress={()=>Alert.alert('Text',item)}>
-              <Text>{item}</Text>
-            </ListItem>
-          </List>
-          )}
+        <Swiper
+          containerStyle={styles.cardContainer}
+          cards={this.state.list}
+          renderCard={(cardData) => <Card  stylesCard={styles.card} data={cardData} />}
+          renderNoMoreCards={() => <NoMoreCards />}
+          handleYup={this.handleYup}
+          handleNope={this.handleNope}
+          />
         </Content>
       </Container>
     );
