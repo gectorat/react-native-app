@@ -1,6 +1,6 @@
 
 import type { Action } from '../actions/types';
-import { SET_INDEX } from '../actions/list';
+import { ADD_ITEM, SET_INDEX } from '../actions/list';
 
 export type State = {
     list: string
@@ -17,6 +17,12 @@ export default function (state:State = initialState, action:Action): State {
       ...state,
       selectedIndex: action.payload,
     };
+  }
+  if (action.type === ADD_ITEM) {
+    return {
+      ...state,
+      list: [...state.list, action.text]
+    }
   }
   return state;
 }

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { TouchableOpacity, Image } from 'react-native';
+import { TouchableOpacity, Image, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import {
   Container,
@@ -11,8 +11,7 @@ import {
   Text,
   Button,
   Icon } from 'native-base';
-import { Grid, Row, Col } from 'react-native-easy-grid';
-import SwipeCards from '../swipeCards/swiper';
+import NoItems from '../common/NoItemContentMsg';
 import { openDrawer, closeDrawer } from '../../actions/drawer';
 import { replaceRoute, replaceOrPushRoute } from '../../actions/route';
 import { setIndex } from '../../actions/list';
@@ -87,6 +86,9 @@ class Home extends Component {
           <Button transparent onPress={() => this.replaceRoute('login')}>
             <Icon name="ios-power" />
           </Button>
+          <Button transparent onPress={() => this.navigateTo('newItem')}>
+            <Icon name="ios-add-circle-outline" />
+          </Button>
 
           <Title>{(this.props.name) ? this.props.name : 'Home'}</Title>
 
@@ -96,25 +98,14 @@ class Home extends Component {
         </Header>
         <Content>
           {this.state.list.length === 0 ?
-            <Grid>
-              <Row>
-                <Col height={300}></Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Button block transparent warning>No Items</Button>
-                </Col>
-              </Row>
-            </Grid> : null}
-          <SwipeCards
-            cards={this.state.cards}
-
-            renderCard={(cardData) => <Card {...cardData} />}
-            renderNoMoreCards={() => <NoMoreCards />}
-
-            handleYup={this.handleYup}
-            handleNope={this.handleNope}
-          />
+            <NoItems>Empty</NoItems> : null}
+          {this.state.list.map((item, i) =>
+          <List key={i}>
+            <ListItem button onPress={()=>Alert.alert('Text',item)}>
+              <Text>{item}</Text>
+            </ListItem>
+          </List>
+          )}
         </Content>
       </Container>
     );

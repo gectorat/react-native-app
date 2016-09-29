@@ -27,6 +27,9 @@ class SideBar extends Component {
     return (
       <Content theme={myTheme} style={styles.sidebar} >
         <List>
+          <ListItem button onPress={() => this.navigateTo('newItem')} >
+            <Text>Submit New Request</Text>
+          </ListItem>
           <ListItem button onPress={() => this.navigateTo('home')} >
             <Text>Home</Text>
           </ListItem>

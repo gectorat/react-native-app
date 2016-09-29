@@ -9,9 +9,10 @@ import { popRoute } from './actions/route';
 
 import Login from './components/login/';
 import Home from './components/home/';
-import BlankPage from './components/blankPage';
+import BlankPage from './components/blankPage/';
+import NewItem from './components/newItem/';
 import SplashPage from './components/splashscreen/';
-import SideBar from './components/sideBar';
+import SideBar from './components/sideBar/';
 import { statusBarColor } from './themes/base-theme';
 
 Navigator.prototype.replaceWithAnimation = function replaceWithAnimation(route) {
@@ -97,6 +98,8 @@ class AppNavigator extends Component {
         return <Home navigator={navigator} />;
       case 'blankPage':
         return <BlankPage navigator={navigator} />;
+      case 'newItem':
+        return <NewItem navigator={navigator} />;
       default :
         return <Login navigator={navigator} />;
     }
