@@ -5,8 +5,10 @@ import { Container, Header, Title, Content, List, ListItem, InputGroup, Input, B
 
 import { openDrawer } from '../../actions/drawer';
 import { popRoute } from '../../actions/route';
-import { addItem } from '../../actions/list';
+import { createPost } from '../../actions/post';
 import styles from './styles';
+
+import { v1 } from 'react-native-uuid';
 
 const placeholder = {
   email: 'Email',
@@ -28,11 +30,17 @@ class NewItem extends Component {
     super();
     this.state = { description: '' }
   }
+
   addNewRequest() {
-    this.props.addItem(this.state.description);
+    const { title, body } = this.state;
+    this.props.createPost({ id: v1(), timestamp: +new Date, title, body});
   }
-  updateDescription(description){
-    this.setState({description});
+
+  updateDescription(body){
+    this.setState({body});
+  }
+  updateTitle(title){
+    this.setState({title});
   }
   popRoute() {
     this.props.popRoute();
@@ -64,7 +72,10 @@ class NewItem extends Component {
             </ListItem>
             <ListItem>
               <InputGroup>
-                <Input placeholder={placeholder.subject}/>
+                <Input
+                  value={this.state.title}
+                  onChangeText={(e) => this.updateTitle(e)}
+                  placeholder={placeholder.subject}/>
               </InputGroup>
             </ListItem>
             <ListItem>
@@ -73,7 +84,7 @@ class NewItem extends Component {
                   multiline
                   numberOfLines={5}
                   height={150}
-                  value={this.state.description}
+                  value={this.state.body}
                   onChangeText={(e) => this.updateDescription(e)}
                   placeholder={placeholder.description}/>
               </InputGroup>
@@ -89,6 +100,7 @@ class NewItem extends Component {
 function bindAction(dispatch) {
   return {
     openDrawer: () => dispatch(openDrawer()),
+    createPost: (data) => dispatch(createPost(data)),
     addItem: (text) => dispatch(addItem(text)),
     popRoute: () => dispatch(popRoute()),
   };

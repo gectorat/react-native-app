@@ -18,6 +18,7 @@ import NoItems from '../common/NoItemContentMsg';
 import { openDrawer, closeDrawer } from '../../actions/drawer';
 import { replaceRoute, replaceOrPushRoute } from '../../actions/route';
 import { setIndex } from '../../actions/list';
+import { syncPosts, fetchPosts } from '../../actions/post';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
 
@@ -33,10 +34,8 @@ class Home extends Component {
     list: React.PropTypes.arrayOf(React.PropTypes.string),
   }
 
-  constructor(props) {
-    super();
-    this.dismissListItem = this.dismissListItem.bind(this);
-    this.state = { list: props.list };
+  componentDidMount() {
+    // this.props.fetchPosts();
   }
 
   replaceRoute(route) {
@@ -49,21 +48,33 @@ class Home extends Component {
     this.props.replaceOrPushRoute(route);
   }
 
-  dismissListItem(index) {
-    let list = this.state.list;
-
-    this.setState({list: [
-      ...list.slice(0, index),
-      ...list.slice(index + 1)
-    ]});
-  }
-
   render() {
+    const { posts, isEditing } = this.props.posts;
+    const { syncPosts } = this.props;
+
+    const content = posts ? (
+        posts.map((post) => {
+          console.log(post.timestamp)
+            return (
+              <List key={post.timestamp}>
+                <ListItem button onPress={()=>Alert.alert('Text', post.body)}>
+                  <Text>{post.title}</Text>
+                </ListItem>
+              </List>
+            )
+        })
+    ) : (
+        <NoItems>Empty</NoItems>
+    );
+
     return (
       <Container theme={myTheme} style={styles.container}>
         <Header>
           <Button transparent onPress={() => this.replaceRoute('login')}>
             <Icon name="ios-power" />
+          </Button>
+          <Button transparent onPress={() => this.props.fetchPosts()}>
+            <Icon name="ios-refresh" />
           </Button>
           <Button transparent onPress={() => this.navigateTo('newItem')}>
             <Icon name="ios-add-circle-outline" />
@@ -76,15 +87,7 @@ class Home extends Component {
           </Button>
         </Header>
         <Content>
-          {this.state.list.length === 0 ?
-            <NoItems>Empty</NoItems> : null}
-          {this.state.list.map((item, i) =>
-          <List key={i}>
-            <ListItem button onPress={()=>Alert.alert('Text',item)}>
-              <Text>{item}</Text>
-            </ListItem>
-          </List>
-          )}
+          {content}
         </Content>
       </Container>
     );
@@ -93,6 +96,8 @@ class Home extends Component {
 
 function bindAction(dispatch) {
   return {
+    fetchPosts: () => dispatch(fetchPosts()),
+    syncPosts: () => dispatch(syncPosts()),
     openDrawer: () => dispatch(openDrawer()),
     closeDrawer: () => dispatch(closeDrawer()),
     replaceRoute: route => dispatch(replaceRoute(route)),
@@ -104,6 +109,7 @@ function bindAction(dispatch) {
 function mapStateToProps(state) {
   return {
     name: state.user.name,
+    posts: state.posts,
     list: state.list.list,
   };
 }
