@@ -58,24 +58,6 @@ class Home extends Component {
   }
 
   render() {
-    const { posts, isEditing } = this.props.posts;
-    const { syncPosts } = this.props;
-
-    const content = posts ? (
-        posts.map((post) => {
-          console.log(post.timestamp)
-            return (
-              <List key={post.timestamp}>
-                <ListItem button onPress={()=>Alert.alert('Text', post.body)}>
-                  <Text>{post.title}</Text>
-                </ListItem>
-              </List>
-            )
-        })
-    ) : (
-        <NoItems>Empty</NoItems>
-    );
-
     return (
       <Container theme={myTheme} style={styles.container}>
         <Header>
@@ -96,7 +78,6 @@ class Home extends Component {
           </Button>
         </Header>
         <Content>
-          {content}
           <Swiper
             containerStyle={styles.cardContainer}
             cards={this.state.list}
