@@ -80,9 +80,9 @@ class Home extends Component {
         <Content>
           <Swiper
             containerStyle={styles.cardContainer}
-            cards={this.state.list}
+            cards={this.props.list}
             renderCard={(cardData) => <Card  stylesCard={styles.card} data={cardData} />}
-            renderNoMoreCards={() => <NoMoreCards />}
+            renderNoMoreCards={() => <NoItems/>}
             handleYup={this.handleYup}
             handleNope={this.handleNope}
           />
