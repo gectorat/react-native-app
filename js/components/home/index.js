@@ -21,6 +21,7 @@ import myTheme from '../../themes/base-theme';
 import styles from './styles';
 import Swiper from '../swipeCards/swiper';
 import Card from '../swipeCards/card';
+
 class Home extends Component {
 
   static propTypes = {
