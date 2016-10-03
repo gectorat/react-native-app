@@ -4,12 +4,11 @@ import { Platform } from 'react-native';
 
 export default {
 
-    // Badge
+  // Badge
   badgeBg: '#ED1727',
   badgeColor: '#fff',
 
-
-    // Button
+  // Button
   btnFontFamily: (Platform.OS === 'ios') ? 'HelveticaNeue' : 'Roboto_medium',
   btnDisabledBg: '#b5b5b5',
   btnDisabledClr: '#f1f1f1',
@@ -192,7 +191,7 @@ export default {
   // Tabs
   tabBgColor: '#F8F8F8',
   tabFontSize: 15,
-  tabTextColor: '#fff',
+  tabTextColor: '#000',
 
 
   // Text

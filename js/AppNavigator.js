@@ -9,6 +9,7 @@ import { popRoute } from './actions/route';
 
 import Login from './components/login/';
 import Home from './components/home/';
+import TabMenu from './components/tabMenu/';
 import BlankPage from './components/blankPage/';
 import NewItem from './components/newItem/';
 import SplashPage from './components/splashscreen/';
@@ -92,6 +93,8 @@ class AppNavigator extends Component {
     switch (route.id) {
       case 'splashscreen':
         return <SplashPage navigator={navigator} />;
+      case 'tabmenu':
+        return <TabMenu navigator={navigator} />;
       case 'login':
         return <Login navigator={navigator} />;
       case 'home':
@@ -100,6 +103,7 @@ class AppNavigator extends Component {
         return <BlankPage navigator={navigator} />;
       case 'newItem':
         return <NewItem navigator={navigator} />;
+
       default :
         return <Login navigator={navigator} />;
     }

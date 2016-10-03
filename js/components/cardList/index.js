@@ -20,8 +20,6 @@ import { setIndex } from '../../actions/list';
 import { syncPosts, fetchPosts } from '../../actions/post';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
-import Swiper from '../swipeCards/swiper';
-import Card from '../swipeCards/card';
 
 class Home extends Component {
 
@@ -37,14 +35,6 @@ class Home extends Component {
 
   componentDidMount() {
     // this.props.fetchPosts();
-  }
-
-  handleYup (card) {
-    console.log(`YES`)
-  }
-
-  handleNope (card) {
-    console.log(`NO`)
   }
 
   replaceRoute(route) {
@@ -63,7 +53,6 @@ class Home extends Component {
 
     const content = posts ? (
         posts.map((post) => {
-          console.log(post.timestamp)
             return (
               <List key={post.timestamp}>
                 <ListItem button onPress={()=>Alert.alert('Text', post.body)}>
@@ -97,14 +86,6 @@ class Home extends Component {
         </Header>
         <Content>
           {content}
-          <Swiper
-            containerStyle={styles.cardContainer}
-            cards={this.state.list}
-            renderCard={(cardData) => <Card  stylesCard={styles.card} data={cardData} />}
-            renderNoMoreCards={() => <NoMoreCards />}
-            handleYup={this.handleYup}
-            handleNope={this.handleNope}
-          />
         </Content>
       </Container>
     );
