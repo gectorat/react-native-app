@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, Image, Alert } from 'react-native';
 import { connect } from 'react-redux';
+import Dimensions from 'Dimensions';
 import {
   Container,
   View,
@@ -13,13 +14,14 @@ import {
   List,
   ListItem,
   Icon } from 'native-base';
-
 import NoItems from '../common/NoItemContentMsg';
 import { openDrawer, closeDrawer } from '../../actions/drawer';
 import { replaceRoute, replaceOrPushRoute } from '../../actions/route';
 import { setIndex } from '../../actions/list';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
+import Swiper from '../swipeCards/swiper';
+import Card from '../swipeCards/card';
 
 class Home extends Component {
 
@@ -34,9 +36,18 @@ class Home extends Component {
   }
 
   constructor(props) {
+
     super();
     this.dismissListItem = this.dismissListItem.bind(this);
     this.state = { list: props.list };
+  }
+
+  handleYup (card) {
+    console.log(`YES`)
+  }
+
+  handleNope (card) {
+    console.log(`NO`)
   }
 
   replaceRoute(route) {
@@ -59,38 +70,42 @@ class Home extends Component {
   }
 
   render() {
+    const {height, width} = Dimensions.get('window');
     return (
       <Container theme={myTheme} style={styles.container}>
         <Header>
           <Button transparent onPress={() => this.replaceRoute('login')}>
-            <Icon name="ios-power" />
+            <Icon style={styles.headButton} name="ios-power" />
           </Button>
-          <Button transparent onPress={() => this.navigateTo('newItem')}>
-            <Icon name="ios-add-circle-outline" />
+          <Button className={'headButton'} transparent onPress={() => this.navigateTo('newItem')}>
+            <Icon style={styles.headButton} name="ios-add-circle-outline" />
           </Button>
 
-          <Title>{(this.props.name) ? this.props.name : 'Home'}</Title>
+          <Title style={styles.header}>{(this.props.name) ? this.props.name : 'Home'}</Title>
 
-          <Button transparent onPress={this.props.openDrawer}>
-            <Icon name="ios-menu" />
+          <Button className={'headButton'} transparent onPress={this.props.openDrawer}>
+            <Icon style={styles.headButton} name="ios-menu" />
           </Button>
         </Header>
         <Content>
-          {this.state.list.length === 0 ?
-            <NoItems>Empty</NoItems> : null}
-          {this.state.list.map((item, i) =>
-          <List key={i}>
-            <ListItem button onPress={()=>Alert.alert('Text',item)}>
-              <Text>{item}</Text>
-            </ListItem>
-          </List>
-          )}
+        <Swiper
+          containerStyle={styles.cardContainer}
+          cards={this.state.list}
+          renderCard={(cardData) => <Card
+            width={width}
+            height={height}
+            stylesCard={styles.card} 
+            data={cardData} />
+          }
+          renderNoMoreCards={() => <NoMoreCards />}
+          handleYup={this.handleYup}
+          handleNope={this.handleNope}
+          />
         </Content>
       </Container>
     );
   }
 }
-
 function bindAction(dispatch) {
   return {
     openDrawer: () => dispatch(openDrawer()),

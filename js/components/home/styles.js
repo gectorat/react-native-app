@@ -5,7 +5,7 @@ const { StyleSheet } = React;
 
 module.exports = StyleSheet.create({
   container: {
-    backgroundColor: '#FBFAFA',
+    backgroundColor: '#FBFAFA'
   },
   row: {
     flex: 1,
@@ -24,4 +24,18 @@ module.exports = StyleSheet.create({
   mt: {
     marginTop: 20,
   },
+  card: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff'
+  },
+  headButton: {
+    color: '#23debf'
+  }
 });
