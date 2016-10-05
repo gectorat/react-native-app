@@ -94,7 +94,7 @@ class AppNavigator extends Component {
       case 'splashscreen':
         return <SplashPage navigator={navigator} />;
       case 'nav.cards':
-          return <TabMenu navigator={navigator} />;
+        return <TabMenu navigator={navigator} />;
       case 'login':
         return <Login navigator={navigator} />;
       case 'home':
