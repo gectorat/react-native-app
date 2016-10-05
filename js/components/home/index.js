@@ -34,18 +34,20 @@ class Home extends Component {
     list: React.PropTypes.arrayOf(React.PropTypes.string),
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.dismissListItem = this.dismissListItem.bind(this);
     this.state = { list: props.list, page: 'nav.home' };
   }
 
-  handleYup (card) {
-    console.log(`YES`)
+  handleYup() {
+    console.log(this);
+    console.log('YES');
   }
 
-  handleNope (card) {
-    console.log(`NO`)
+  handleNope() {
+    console.log(this);
+    console.log('NO');
   }
 
   replaceRoute(route) {
@@ -67,7 +69,7 @@ class Home extends Component {
 
     this.setState({ list: [
       ...list.slice(0, index),
-      ...list.slice(index + 1)
+      ...list.slice(index + 1),
     ] });
   }
 
@@ -92,7 +94,7 @@ class Home extends Component {
 
     const mainContent = this.state.page === 'nav.home' ? swiper : (<Text>Not A Home</Text>);
     return (
-      <Container>
+      <Container theme={myTheme} >
         <Header>
           <Tabs
             selected={this.state.page}

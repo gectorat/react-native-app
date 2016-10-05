@@ -29,6 +29,10 @@ project.xcworkspace
 .gradle
 local.properties
 
+# Exponent 
+.exponent/
+# vscode
+.vscode/
 # node.js
 #
 node_modules/
