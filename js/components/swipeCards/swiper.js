@@ -222,7 +222,7 @@ SwipeCards.propTypes = {
 };
 
 SwipeCards.defaultProps = {
-    loop: false,
+    loop: true,
     showYup: false,
     showNope: false,
 };
