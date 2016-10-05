@@ -26,6 +26,7 @@ class NewItem extends Component {
     index: React.PropTypes.number,
     list: React.PropTypes.arrayOf(React.PropTypes.string),
   }
+
   constructor(){
     super();
     this.state = { description: '' }
@@ -39,16 +40,17 @@ class NewItem extends Component {
   updateDescription(body){
     this.setState({body});
   }
+
   updateTitle(title){
     this.setState({title});
   }
+
   popRoute() {
     this.props.popRoute();
   }
 
   render() {
     const { props: { name, index, list } } = this;
-
     return (
       <Container style={styles.container}>
         <Header>

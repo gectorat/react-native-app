@@ -93,17 +93,20 @@ class AppNavigator extends Component {
     switch (route.id) {
       case 'splashscreen':
         return <SplashPage navigator={navigator} />;
-      case 'tabmenu':
-        return <TabMenu navigator={navigator} />;
+      case 'nav.cards':
+          return <TabMenu navigator={navigator} />;
       case 'login':
         return <Login navigator={navigator} />;
       case 'home':
         return <Home navigator={navigator} />;
+      case 'nav.home':
+        return <Home navigator={navigator} />;
+      case 'open.drawer':
+        return <Home drawerState="opened" navigator={navigator} />;
       case 'blankPage':
         return <BlankPage navigator={navigator} />;
-      case 'newItem':
+      case 'nav.create':
         return <NewItem navigator={navigator} />;
-
       default :
         return <Login navigator={navigator} />;
     }

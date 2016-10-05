@@ -1,18 +1,18 @@
 
 import React, { Component } from 'react';
-import { TouchableOpacity, Image, Alert } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+
+import Tabs from 'react-native-tabs';
+
 import {
   Container,
   View,
-  Header,
-  Title,
   Content,
-  Text,
-  Button,
-  List,
-  ListItem,
-  Icon } from 'native-base';
+  Header,
+  Icon,
+  Text } from 'native-base';
+
 import NoItems from '../common/NoItemContentMsg';
 import { openDrawer, closeDrawer } from '../../actions/drawer';
 import { replaceRoute, replaceOrPushRoute } from '../../actions/route';
@@ -34,9 +34,15 @@ class Home extends Component {
     name: React.PropTypes.string,
     list: React.PropTypes.arrayOf(React.PropTypes.string),
   }
+  constructor(){
+    super();
 
+    this.state = {page: 'nav.home'};
+  }
   componentDidMount() {
-    // this.props.fetchPosts();
+    if (this.props.drawerState === 'opened') {
+      this.props.openDrawer()
+    }
   }
 
   handleYup (card) {
@@ -52,41 +58,45 @@ class Home extends Component {
   }
 
   navigateTo(route, index) {
-    this.props.closeDrawer();
-    this.props.setIndex(index);
-    this.props.replaceOrPushRoute(route);
+    if (route === 'open.drawer') {
+      this.props.openDrawer();
+    } else {
+      this.props.closeDrawer();
+      this.props.setIndex(index);
+      this.props.replaceOrPushRoute(route);
+    }
   }
 
   render() {
+    const swiper = (
+      <Swiper
+        containerStyle={styles.cardContainer}
+        cards={this.props.list}
+        renderCard={(cardData) => <Card stylesCard={styles.card} data={cardData} />}
+        renderNoMoreCards={() => <NoItems/>}
+        handleYup={this.handleYup}
+        handleNope={this.handleNope}
+      />);
+      const mainContent = this.state.page === 'nav.home' ? swiper : (<Text>Not A Home</Text>)
     return (
-      <Container theme={myTheme} style={styles.container}>
+      <Container>
         <Header>
-          <Button transparent onPress={() => this.replaceRoute('login')}>
-            <Icon name="ios-power" />
-          </Button>
-          <Button transparent onPress={() => this.props.fetchPosts()}>
-            <Icon name="ios-refresh" />
-          </Button>
-          <Button transparent onPress={() => this.navigateTo('newItem')}>
-            <Icon name="ios-add-circle-outline" />
-          </Button>
-
-          <Title>{(this.props.name) ? this.props.name : 'Home'}</Title>
-
-          <Button transparent onPress={this.props.openDrawer}>
-            <Icon name="ios-menu" />
-          </Button>
+          <Tabs
+            selected={this.state.page}
+            style={styles.tabview}
+            onSelect={el=>this.navigateTo(el.props.tabname)}>
+            <Icon style={styles.tabitem} tabname="nav.home" name="ios-home"/>
+            <Icon style={styles.tabitem} tabname="nav.create" name="ios-create"/>
+            <Icon style={styles.tabitem} tabname="nav.cards" name="ios-paper"/>
+            <Icon style={styles.tabitem} tabname="open.drawer" name="ios-list"/>
+          </Tabs>
         </Header>
+
         <Content>
-          <Swiper
-            containerStyle={styles.cardContainer}
-            cards={this.props.list}
-            renderCard={(cardData) => <Card  stylesCard={styles.card} data={cardData} />}
-            renderNoMoreCards={() => <NoItems/>}
-            handleYup={this.handleYup}
-            handleNope={this.handleNope}
-          />
+          {mainContent}
         </Content>
+
+
       </Container>
     );
   }

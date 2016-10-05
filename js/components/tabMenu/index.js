@@ -9,9 +9,9 @@ import { View as RawView } from 'react-native';
 import { connect } from 'react-redux';
 import {
   Container,
+  Content,
   Header,
   Title,
-  Content,
   Tabs,
   Text,
   Card,
@@ -24,99 +24,61 @@ import {
   InputGroup,
   Input,
   Icon } from 'native-base';
+
+import TabCard from '../common/cards/TabCard';
+import TabCardComplex from '../common/cards/TabCardComplex';
 import NoItems from '../common/NoItemContentMsg';
-import { openDrawer, closeDrawer } from '../../actions/drawer';
-import { replaceRoute, replaceOrPushRoute } from '../../actions/route';
 import { setIndex } from '../../actions/list';
 import { syncPosts, fetchPosts } from '../../actions/post';
+import { popRoute } from '../../actions/route';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
 
 class Home extends Component {
 
   static propTypes = {
-    openDrawer: React.PropTypes.func,
-    closeDrawer: React.PropTypes.func,
-    replaceRoute: React.PropTypes.func,
-    replaceOrPushRoute: React.PropTypes.func,
     setIndex: React.PropTypes.func,
     name: React.PropTypes.string,
     list: React.PropTypes.arrayOf(React.PropTypes.string),
+  }
+
+  constructor() {
+    super();
+    this.state = { description: '' }
   }
 
   componentDidMount() {
     // this.props.fetchPosts();
   }
 
-  replaceRoute(route) {
-    this.props.replaceRoute(route);
-  }
-
-  navigateTo(route, index) {
-    this.props.closeDrawer();
-    this.props.setIndex(index);
-    this.props.replaceOrPushRoute(route);
-  }
-
   render() {
-    const { posts, isEditing } = this.props.posts;
-    const { syncPosts } = this.props;
 
+    const { posts, isEditing } = this.props.posts;
+    const mockText = 'NativeBase is a free and open source framework that enables developers to build high-quality mobile apps using React Native iOS and Android apps with a fusion of ES6.';
     return (
       <Container theme={myTheme} style={styles.container}>
-        <Header searchBar regular>
-          <InputGroup>
-            <Icon name='ios-search' />
-            <Input placeholder='Search in All' height={32} />
-            <Icon name='ios-archive-outline' />
-          </InputGroup>
-          <Button transparent>
-            Search
+        <Header>
+          <Button transparent onPress={() => this.props.popRoute()}>
+            <Icon name="ios-arrow-back" />
           </Button>
+          <Title>Tab Menu</Title>
         </Header>
         <Content style={{backgroundColor:'#000'}}>
           <Tabs>
             <View tabLabel='Home'>
               <RawView style={{backgroundColor:'#000'}}>
-                <Card>
-                  <CardItem>
-                    <Text>
-                      NativeBase is a free and open source framework that enables
-                      developers to build high-quality mobile apps using React Native
-                      iOS and Android apps with a fusion of ES6.
-                    </Text>
-                  </CardItem>
-                </Card>
-
-                <Card>
-                  <CardItem>
-                    <Text>
-                      NativeBase is a free and open source framework that enables
-                      developers to build high-quality mobile apps using React Native
-                      iOS and Android apps with a fusion of ES6.
-                    </Text>
-                  </CardItem>
-                </Card>
-
-                <Card>
-                  <CardItem>
-                    <Text>
-                      NativeBase is a free and open source framework that enables
-                      developers to build high-quality mobile apps using React Native
-                      iOS and Android apps with a fusion of ES6.
-                    </Text>
-                  </CardItem>
-                </Card>
-
-                <Card>
-                  <CardItem>
-                    <Text>
-                      NativeBase is a free and open source framework that enables
-                      developers to build high-quality mobile apps using React Native
-                      iOS and Android apps with a fusion of ES6.
-                    </Text>
-                  </CardItem>
-                </Card>
+                <TabCard>
+                  {mockText}
+                </TabCard>
+                <TabCard>
+                  {mockText}
+                </TabCard>
+                <TabCard>
+                  {mockText}
+                </TabCard>
+                <TabCard>
+                  {mockText}
+                </TabCard>
 
               </RawView>
             </View>
@@ -142,31 +104,14 @@ class Home extends Component {
                 </Card>
               </RawView>
               <RawView style={{backgroundColor:'#000'}}>
-                <Card>
-                  <CardItem header>
-                    <Icon name='ios-people'></Icon>
-                    <Text>Card Header</Text>
-                  </CardItem>
-                  <CardItem cardBody>
-                    <Text>
-                      NativeBase is a free and open source framework that enables
-                      developers to build high-quality mobile apps using React Native
-                      iOS and Android apps with a fusion of ES6.
-                    </Text>
-
-                    <RawView style={{
-                      flex: 1,
-                      flexDirection:'row',
-                      alignItems:'stretch',
-                      justifyContent:'space-between'
-                    }}>
-                      <Button transparent><Icon name='ios-heart'></Icon> 315</Button>
-                      <Button transparent><Icon name='ios-medical'></Icon></Button>
-                      <Button transparent><Icon name='ios-log-out'></Icon> 315</Button>
-                    </RawView>
-                  </CardItem>
-                </Card>
-
+                <TabCardComplex
+                  header={{
+                    iconName: "ios-people",
+                    title:"Tab Header"
+                  }}
+                  actionMenu={true}>
+                  {mockText}
+                </TabCardComplex>
               </RawView>
             </View>
           </Tabs>
@@ -179,10 +124,7 @@ function bindAction(dispatch) {
   return {
     fetchPosts: () => dispatch(fetchPosts()),
     syncPosts: () => dispatch(syncPosts()),
-    openDrawer: () => dispatch(openDrawer()),
-    closeDrawer: () => dispatch(closeDrawer()),
-    replaceRoute: route => dispatch(replaceRoute(route)),
-    replaceOrPushRoute: route => dispatch(replaceOrPushRoute(route)),
+    popRoute: () => dispatch(popRoute()),
     setIndex: index => dispatch(setIndex(index)),
   };
 }
