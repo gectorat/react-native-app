@@ -4,7 +4,7 @@ const { StyleSheet } = React;
 
 module.exports = StyleSheet.create({
   mainContainer: {
-    margin: 20
+    margin: 20,
   },
   companyName: {
     marginLeft: 80,

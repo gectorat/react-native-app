@@ -125,9 +125,9 @@ export default {
 
 
   // Icon
-  iconFamily: 'Ionicons',
-  iconFontSize: (Platform.OS === 'ios') ? 30 : 28,
-  iconMargin: 7,
+   iconFamily: 'Ionicons',
+   iconFontSize: (Platform.OS === 'ios') ? 30 : 28,
+   iconMargin: 7,
 
 
   // InputGroup

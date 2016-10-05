@@ -5,14 +5,13 @@ import {
   Container,
   Content,
   Title,
+  Icon,
   Header
 } from 'native-base';
-import { Image } from 'react-native';
-import Lightbox from 'react-native-lightbox';
+import { Image,TouchableHighlight } from 'react-native';
+import Gallery from '../common/Gallery';
 import styles from './styles';
-
-const background = require('../../../images/shadow.png');
-const Card = React.createClass({
+export default class Card extends Component {
   render() {
     return (
       <View style={[this.props.stylesCard, {width: 0.9 * this.props.width, 
@@ -41,17 +40,20 @@ const Card = React.createClass({
                     Есть 2 комплекта резины, сигнализация, центральный замок и задние парктроники.
                   </Text>
                 </View>
-                <Lightbox>
-                  <Image
-                    style={{ height: 140, width: 100 }}
-                    source={background}
-                  />
-                </Lightbox>
+                
+                  <Gallery data={['https://upload.wikimedia.org/wikipedia/commons/4/47/2012_Peugeot_207_(A7_Series_II_MY11)_XT_5-door_hatchback_(2015-06-08).jpg',
+                  'https://i.ytimg.com/vi/nit-3xVAIps/maxresdefault.jpg',
+                  'https://i.ytimg.com/vi/Sjn92OLm9io/maxresdefault.jpg',
+                  'https://upload.wikimedia.org/wikipedia/commons/c/cc/Peugeot_207_3-T%C3%BCrer_front.JPG']} />
               </View>
             </Content>
           </Container>
+          <View style={{marginLeft: 10, marginRight: 10, flexDirection: 'row'}}>
+            <Icon style={{flex: 0.4, color: "#60938a"}} name="ios-star-outline" />
+            <Icon style={{flex: 0.4, color: "#60938a"}} name="ios-chatboxes-outline" />
+            <Icon style={{color: "#60938a"}} name="ios-redo-outline" />
+          </View>
       </View>
     )
   }
-})
-export default Card
+}
