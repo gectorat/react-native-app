@@ -21,7 +21,6 @@ import myTheme from '../../themes/base-theme';
 import { syncPosts, fetchPosts } from '../../actions/post';
 import styles from './styles';
 import Swiper from '../swipeCards/swiper';
-import Card from '../swipeCards/card';
 
 class Home extends Component {
 
@@ -32,7 +31,7 @@ class Home extends Component {
     replaceOrPushRoute: React.PropTypes.func,
     setIndex: React.PropTypes.func,
     name: React.PropTypes.string,
-    list: React.PropTypes.arrayOf(React.PropTypes.string),
+    // list: React.PropTypes.arrayOf(React.PropTypes.string),
   }
 
   constructor(props) {
@@ -42,11 +41,23 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    // this.props.fetchPosts();
+    var db = firebase.database();
+    var ref = db.ref("posts");
+    ref.on("value", function(snapshot) {
+      // this.state({list: snapshot.val()})
+      // this.props.fetchPosts();
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
+    this.props.fetchPosts();
+  }
+
+  shouldComponentUpdate(props, state) {
+    return false;
   }
 
   handleYup() {
-    alert('1')
+    // this.props.fetchPosts();
     console.log('YES');
   }
 
@@ -115,7 +126,7 @@ class Home extends Component {
 }
 function bindAction(dispatch) {
   return {
-    fetchPosts: () => dispatch(fetchPosts()),
+    fetchPosts: () => setTimeout(() => {dispatch(fetchPosts())},1000),
     syncPosts: () => dispatch(syncPosts()),
     openDrawer: () => dispatch(openDrawer()),
     closeDrawer: () => dispatch(closeDrawer()),
@@ -128,8 +139,8 @@ function bindAction(dispatch) {
 function mapStateToProps(state) {
   return {
     name: state.user.name,
-    posts: state.posts,
-    list: state.list.list,
+    posts: state.posts.posts,
+    list: state.posts.posts,
   };
 }
 

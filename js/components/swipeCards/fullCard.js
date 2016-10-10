@@ -43,36 +43,16 @@ export default class Card extends Component {
                   </View>
                   <View style={styles.bodySection}>
                     <View style={styles.title}>
-                      <Text style={{fontFamily: 'HelveticaNeue-Medium'}}>
-                        Продам автомобиль Peugeot 207 + 2 комплекта резины
+                      <Text numberOfLines={2} style={{fontFamily: 'HelveticaNeue-Medium'}}>
+                        {this.props.children.title}
                       </Text>
                     </View>
                     <View style={styles.body}>
-                      <Text style={{fontFamily: 'HelveticaNeue-Light'}}>
-                        Продам свой автомобиль Peugeot 207. Машинка на ходу, обсуживалась на фирменном СТО.
-                        Достаточно просторный салон, есть все необходимое для комфортной езды. 
-                        Есть 2 комплекта резины, сигнализация, центральный замок и задние парктроники.
-                        Продам свой автомобиль Peugeot 207. Машинка на ходу, обсуживалась на фирменном СТО.
-                        Достаточно просторный салон, есть все необходимое для комфортной езды. 
-                        Есть 2 комплекта резины, сигнализация, центральный замок и задние парктроники.
-                        Продам свой автомобиль Peugeot 207. Машинка на ходу, обсуживалась на фирменном СТО.
-                        Достаточно просторный салон, есть все необходимое для комфортной езды. 
-                        Есть 2 комплекта резины, сигнализация, центральный замок и задние парктроники.
-                        Продам свой автомобиль Peugeot 207. Машинка на ходу, обсуживалась на фирменном СТО.
-                        Достаточно просторный салон, есть все необходимое для комфортной езды. 
-                        Есть 2 комплекта резины, сигнализация, центральный замок и задние парктроники.
-                        Продам свой автомобиль Peugeot 207. Машинка на ходу, обсуживалась на фирменном СТО.
-                        Достаточно просторный салон, есть все необходимое для комфортной езды. 
-                        Есть 2 комплекта резины, сигнализация, центральный замок и задние парктроники.
+                      <Text numberOfLines={10} style={{fontFamily: 'HelveticaNeue-Light'}}>
+                        {this.props.children.body}
                       </Text>
                     </View>
-
-                    <Gallery data={['https://upload.wikimedia.org/wikipedia/commons/4/47/2012_Peugeot_207_(A7_Series_II_MY11)_XT_5-door_hatchback_(2015-06-08).jpg',
-                      'https://i.ytimg.com/vi/nit-3xVAIps/maxresdefault.jpg',
-                      'https://i.ytimg.com/vi/Sjn92OLm9io/maxresdefault.jpg',
-                      'https://upload.wikimedia.org/wikipedia/commons/c/cc/Peugeot_207_3-T%C3%BCrer_front.JPG',
-                      'https://i.ytimg.com/vi/Sjn92OLm9io/maxresdefault.jpg',
-                      'https://upload.wikimedia.org/wikipedia/commons/c/cc/Peugeot_207_3-T%C3%BCrer_front.JPG']} />
+                    <Gallery data={this.props.children.photos} />
                   </View>
                 </Content>
               </Container>

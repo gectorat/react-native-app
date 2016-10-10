@@ -14,7 +14,6 @@ function setup():React.Component {
       super();
       global.firebase = firebase;
       firebase.initializeApp(firebaseConfig);
-
       this.state = {
         isLoading: false,
         store: configureStore(() => this.setState({ isLoading: false })),

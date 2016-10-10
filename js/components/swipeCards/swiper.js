@@ -22,7 +22,6 @@ var SWIPE_THRESHOLD = 120;
 class SwipeCards extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0),
@@ -209,7 +208,8 @@ class SwipeCards extends Component {
     // let nopeOpacity = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0]});
     // let nopeScale = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0.5], extrapolate: 'clamp'});
     // let animatedNopeStyles = {transform: [{scale: nopeScale}], opacity: nopeOpacity}
-
+    // const cardData = [title: this.state.card.title, body: this.state.card.body]
+    // console.log(cardData)
         return (
             <View style={this.props.containerStyle}>
                 { this.state.card
@@ -219,10 +219,10 @@ class SwipeCards extends Component {
                         width={width}
                         height={height}
                         stylesCard={styles.card}
-                        data={this.state.card}
+                        // data={this.state.card}
                         isLiked={this.isLiked}
                         isMoved={this.isMoved}
-                      />
+                      >{this.state.card}</Card>
                     </Animated.View>
                 )
                     : this.renderNoMoreCards() }

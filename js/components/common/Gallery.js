@@ -25,6 +25,9 @@ export default class Gallery extends Component {
     }
   }
   render() {
+    if (!this.props.data) {
+      return null;
+    }
     const Preview = <ImagePreview setVisible={this.previewImage} visible={this.state.preview} source={{uri: this.state.source}}/>;
     const Gallery = this.props.data.map((imageUrl,imageIndex) => 
         <TouchableHighlight key={imageIndex} onPress={() => this.setState({source: imageUrl, preview: true})}>

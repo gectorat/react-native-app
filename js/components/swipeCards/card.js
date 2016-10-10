@@ -26,6 +26,7 @@ export default class Card extends Component {
     }
   }
   render() {
+    console.log(this.props.children)
     return (
       <TouchableWithoutFeedback onPress={this.setFullCardVisible}>
         <View>
@@ -47,23 +48,15 @@ export default class Card extends Component {
                   <View style={styles.bodySection}>
                     <View style={styles.title}>
                       <Text numberOfLines={2} style={{fontFamily: 'HelveticaNeue-Medium'}}>
-                        Продам автомобиль Peugeot 207 + 2 комплекта резины
+                        {this.props.children.title}
                       </Text>
                     </View>
                     <View style={styles.body}>
                       <Text numberOfLines={10} style={{fontFamily: 'HelveticaNeue-Light'}}>
-                      {this.props.data}
-                        Продам свой автомобиль Peugeot 207. Машинка на ходу, обсуживалась на фирменном СТО.
-                        Достаточно просторный салон, есть все необходимое для комфортной езды. 
-                        Есть 2 комплекта резины, сигнализация, центральный замок и задние парктроники.
+                        {this.props.children.body}
                       </Text>
                     </View>
-                    <Gallery data={['https://upload.wikimedia.org/wikipedia/commons/4/47/2012_Peugeot_207_(A7_Series_II_MY11)_XT_5-door_hatchback_(2015-06-08).jpg',
-                      'https://i.ytimg.com/vi/nit-3xVAIps/maxresdefault.jpg',
-                      'https://i.ytimg.com/vi/Sjn92OLm9io/maxresdefault.jpg',
-                      'https://upload.wikimedia.org/wikipedia/commons/c/cc/Peugeot_207_3-T%C3%BCrer_front.JPG',
-                      'https://i.ytimg.com/vi/Sjn92OLm9io/maxresdefault.jpg',
-                      'https://upload.wikimedia.org/wikipedia/commons/c/cc/Peugeot_207_3-T%C3%BCrer_front.JPG']} />
+                    <Gallery data={this.props.children.photos} />
                   </View>
                 </Content>
               </Container>
@@ -77,7 +70,7 @@ export default class Card extends Component {
             isLiked={this.props.isLiked}
             isMoved={this.props.isMoved} 
             setFullCardVisible={this.setFullCardVisible} 
-            visible={this.state.visible}/>
+            visible={this.state.visible}>{this.props.children}</FullCard>
         </View>
       </TouchableWithoutFeedback>
     )
