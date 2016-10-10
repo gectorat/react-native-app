@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal, View, TouchableWithoutFeedback, Image, StyleSheet} from 'react-native';
+import { Modal, View, TouchableWithoutFeedback, Image, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   overlay: {
@@ -19,7 +19,6 @@ export default class ImageZoom extends Component {
   }
   render() {
     let {source} = this.props;
-    console.log(this.props)
     return <Modal
         animationType={'fade'}
         transparent={true}

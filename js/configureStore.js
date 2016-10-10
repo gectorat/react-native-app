@@ -24,6 +24,5 @@ export default function configureStore(onCompletion:()=>void):any {
 
   sagaMiddleware.run(rootSaga);
   persistStore(store, { storage: AsyncStorage }, onCompletion);
-
   return store;
 }

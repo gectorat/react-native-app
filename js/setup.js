@@ -12,7 +12,6 @@ function setup():React.Component {
 
     constructor() {
       super();
-
       global.firebase = firebase;
       firebase.initializeApp(firebaseConfig);
 

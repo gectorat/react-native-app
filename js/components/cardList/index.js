@@ -34,7 +34,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    // this.props.fetchPosts();
+    this.props.fetchPosts();
   }
 
   replaceRoute(route) {
@@ -50,7 +50,7 @@ class Home extends Component {
   render() {
     const { posts, isEditing } = this.props.posts;
     const { syncPosts } = this.props;
-
+console.log(this.props)
     const content = posts ? (
         posts.map((post) => {
             return (
