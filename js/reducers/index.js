@@ -8,11 +8,9 @@ import user from './user';
 import list from './list';
 
 export default combineReducers({
-
   drawer,
   route,
   posts,
   user,
   list,
-
 });

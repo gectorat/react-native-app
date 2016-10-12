@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { BackAndroid, Platform, StatusBar, Navigator } from 'react-native';
 import { connect } from 'react-redux';
-import { Drawer } from 'native-base';
+import Drawer from 'react-native-drawer';
 
 import { closeDrawer } from './actions/drawer';
 import { popRoute } from './actions/route';
@@ -54,17 +54,20 @@ class AppNavigator extends Component {
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const routes = this._navigator.getCurrentRoutes();
 
-      if (routes[routes.length - 1].id === 'home' || routes[routes.length - 1].id === 'login') {
-                // CLose the app
+      if (routes[routes.length - 1].id === 'home'
+      || routes[routes.length - 1].id === 'login') {
+        // Close the app 
+        // Exit on press back in home,login pages
         return false;
       }
+
       this.popRoute();
+
       return true;
     });
   }
 
   componentDidUpdate() {
-    // console.log(this.props.routes, 'wdwdwd');
     if (this.props.drawerState === 'opened') {
       this.openDrawer();
     }

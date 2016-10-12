@@ -1,7 +1,6 @@
 
 import { REHYDRATE } from 'redux-persist/constants';
 import type { Action } from '../actions/types';
-import { globalNav } from '../AppNavigator';
 import { PUSH_NEW_ROUTE, POP_ROUTE, POP_TO_ROUTE, REPLACE_ROUTE, REPLACE_OR_PUSH_ROUTE } from '../actions/route';
 
 export type State = {
@@ -13,74 +12,74 @@ const initialState = {
 };
 
 export default function (state:State = initialState, action:Action): State {
-  // console.log(state, "route state *()*(*&77");
-  if (action.type === PUSH_NEW_ROUTE) {
-    // console.log(action.route, "route");
-    globalNav.navigator.push({ id: action.route });
-    return {
-      routes: [...state.routes, action.route],
-    };
-  }
+  const routes = state.routes;
 
-  if (action.type === REPLACE_ROUTE) {
-    globalNav.navigator.replaceWithAnimation({ id: action.route });
-    const routes = state.routes;
-    routes.pop();
-    return {
-      routes: [...routes, action.route],
-    };
-  }
+  switch (action.type) {
+    case PUSH_NEW_ROUTE:
+      return {
+        ...state,
+        routes: [...routes, action.route],
+      };
+    case REPLACE_ROUTE:
+      return {
+        ...state,
+        routes: [...routes.slice(0, -1), action.route],
+      };
+    case REPLACE_OR_PUSH_ROUTE: {
+      if (routes.reverse()[0] === 'home') {
+        if (action.route !== 'home') {
+          return {
+            ...state,
+            routes: [...routes, action.route],
+          };
+        }
 
-  // For sidebar navigation
-  if (action.type === REPLACE_OR_PUSH_ROUTE) {
-    let routes = state.routes;
-
-    if (routes[routes.length - 1] === 'home') {
-      // If top route is home and user navigates to a route other than home, then push
-      if (action.route !== 'home') {
-        globalNav.navigator.push({ id: action.route });
-      } else { // If top route is home and user navigates to home, do nothing
-        routes = [];
+        return {
+          ...state,
+          routes: [action.route],
+        };
+      } else if (action.route === 'home') {
+        return {
+          ...state,
+          routes: [action.route],
+        };
       }
-    } else if (action.route === 'home') {
-      globalNav.navigator.resetTo({ id: 'home' });
-      routes = [];
-    } else {
-      globalNav.navigator.replaceWithAnimation({ id: action.route });
-      routes.pop();
+      return {
+        ...state,
+        routes: [...routes.slice(0, -1), action.route],
+      };
     }
-
-    return {
-      routes: [...routes, action.route],
-    };
-  }
-
-  if (action.type === POP_ROUTE) {
-    globalNav.navigator.pop();
-    const routes = state.routes;
-    routes.pop();
-    return {
-      routes,
-    };
-  }
-
-  if (action.type === POP_TO_ROUTE) {
-    globalNav.navigator.popToRoute({ id: action.route });
-    const routes = state.routes;
-    while (routes.pop() !== action.route) {
-      // keep popping till you get to the route
+    case POP_ROUTE:
+      return {
+        ...state,
+        routes: [...routes.slice(0, -1), action.route],
+      };
+    case POP_TO_ROUTE: {
+      return {
+        ...state,
+        routes: [...routes.slice(0, routes.lastIndexOf(action.route))],
+      };
     }
-    return {
-      routes: [...routes, action.route],
-    };
+    case REHYDRATE: {
+      const savedData = action.payload.route || state;
+      return {
+        ...savedData,
+      };
+    }
+    case 'SAVE_NAVIGATION_STACK':
+      return {
+        ...state,
+        navigationStacks: {
+          ...state.navigationStacks,
+          [state.drawerTab]: action.stack,
+        },
+      };
+    case 'SET_NAVIGATION_ROUTES':
+      return {
+        ...state,
+        routes: action.routes,
+      };
+    default :
+      return state;
   }
-
-  if (action.type === REHYDRATE) {
-    const savedData = action.payload.route || state;
-    return {
-      ...savedData,
-    };
-  }
-
-  return state;
 }

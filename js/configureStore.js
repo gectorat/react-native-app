@@ -8,6 +8,7 @@ import createSagaMiddleware from 'redux-saga';
 import reducer from './reducers';
 import promise from './promise';
 import rootSaga from './sagas';
+
 const sagaMiddleware = createSagaMiddleware();
 
 export default function configureStore(onCompletion:()=>void):any {

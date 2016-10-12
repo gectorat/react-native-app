@@ -1,14 +1,16 @@
 
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { Platform, BackAndroid, StyleSheet } from 'react-native';
 import CodePush from 'react-native-code-push';
-
-import { Container, Content, Text, View } from 'native-base';
+import { Container, Content, Text, View } from 'native-base';  // @TODO remove
 import Modal from 'react-native-modalbox';
+import { ExNavigator } from 'react-native-autopilot';
 
-import AppNavigator from './AppNavigator';
+// import AppNavigator from './AppNavigator';
+import navigation from './actions/navigation';
 import ProgressBar from './components/loaders/ProgressBar';
-
+import { mapRoute } from './routes';
 import theme from './themes/base-theme';
 
 const styles = StyleSheet.create({
@@ -30,6 +32,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+    this.mapRouteWithProps = route => mapRoute(this.props, route);
     this.state = {
       showDownloadingModal: false,
       showInstalling: false,
@@ -38,6 +41,8 @@ class App extends Component {
   }
 
   componentDidMount() {
+    const navigator = this.navigator;
+
     CodePush.sync({ updateDialog: true, installMode: CodePush.InstallMode.IMMEDIATE },
       (status) => {
         switch (status) {
@@ -60,9 +65,29 @@ class App extends Component {
         this.setState({ downloadProgress: (receivedBytes / totalBytes) * 100 });
       }
     );
+
+    if (Platform.OS === 'android' && !this.backButtonListener) {
+      this.backButtonListener = () => {
+        if (this.props.routes.length > 1) {
+          this.props.popNavigationRoute();
+          return true;
+        }
+
+        return false;
+      };
+      BackAndroid.addEventListener('hardwareBackPress', this.backButtonListener);
+    }
+  }
+
+  componentWillUnmount() {
+    if (Platform.OS === 'android') {
+      BackAndroid.removeEventListener(this.backButtonListener);
+      this.backButtonListener = null;
+    }
   }
 
   render() {
+    const { routes, setNavigationRoutes } = this.props;
     if (this.state.showDownloadingModal) {
       return (
         <Container theme={theme} style={{ backgroundColor: theme.defaultBackgroundColor }}>
@@ -89,12 +114,28 @@ class App extends Component {
             </Modal>
           </Content>
         </Container>
-
-            );
+      );
     }
 
-    return <AppNavigator />;
+    return (
+      <ExNavigator
+        ref={(c) => { this.navigator = c; }}
+        routes={routes}
+        sceneStyle={{ paddingTop: 64 }}
+        routeMapping={this.mapRouteWithProps}
+        persistRoutes={setNavigationRoutes}
+      />);
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  routes: state.route.routes,
+});
+
+App.propTypes = {
+  routes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+  setNavigationRoutes: React.PropTypes.func.isRequired,
+  popNavigationRoute: React.PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, navigation)(App);

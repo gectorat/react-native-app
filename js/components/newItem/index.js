@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Header, Title, Content, List, ListItem, InputGroup, Input, Button, Icon } from 'native-base';
+import { View, List, ListItem, InputGroup, Input, Button } from 'native-base';
 
 import { openDrawer } from '../../actions/drawer';
 import { popRoute } from '../../actions/route';
@@ -52,49 +52,35 @@ class NewItem extends Component {
   render() {
     const { props: { name, index, list } } = this;
     return (
-      <Container style={styles.container}>
-        <Header>
-          <Button transparent onPress={() => this.popRoute()}>
-            <Icon name="ios-arrow-back" />
-          </Button>
-
-          <Title>Add new item</Title>
-
-          <Button transparent onPress={this.props.openDrawer}>
-            <Icon name="ios-menu" />
-          </Button>
-        </Header>
-
-        <Content padder>
-          <List>
-            <ListItem>
-              <InputGroup>
-                <Input placeholder={placeholder.email}/>
-              </InputGroup>
-            </ListItem>
-            <ListItem>
-              <InputGroup>
-                <Input
-                  value={this.state.title}
-                  onChangeText={(e) => this.updateTitle(e)}
-                  placeholder={placeholder.subject}/>
-              </InputGroup>
-            </ListItem>
-            <ListItem>
-              <InputGroup>
-                <Input
-                  multiline
-                  numberOfLines={5}
-                  height={150}
-                  value={this.state.body}
-                  onChangeText={(e) => this.updateDescription(e)}
-                  placeholder={placeholder.description}/>
-              </InputGroup>
-            </ListItem>
-          </List>
-          <Button block info onPress={()=>this.addNewRequest()}>Ask for advance</Button>
-        </Content>
-      </Container>
+      <View>
+        <List>
+          <ListItem>
+            <InputGroup>
+              <Input placeholder={placeholder.email}/>
+            </InputGroup>
+          </ListItem>
+          <ListItem>
+            <InputGroup>
+              <Input
+                value={this.state.title}
+                onChangeText={(e) => this.updateTitle(e)}
+                placeholder={placeholder.subject}/>
+            </InputGroup>
+          </ListItem>
+          <ListItem>
+            <InputGroup>
+              <Input
+                multiline
+                numberOfLines={5}
+                height={150}
+                value={this.state.body}
+                onChangeText={(e) => this.updateDescription(e)}
+                placeholder={placeholder.description}/>
+            </InputGroup>
+          </ListItem>
+        </List>
+        <Button block info onPress={()=>this.addNewRequest()}>Ask for advance</Button>
+      </View>
     );
   }
 }

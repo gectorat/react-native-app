@@ -66,28 +66,9 @@ class Home extends Component {
     );
 
     return (
-      <Container theme={myTheme} style={styles.container}>
-        <Header>
-          <Button transparent onPress={() => this.replaceRoute('login')}>
-            <Icon name="ios-power" />
-          </Button>
-          <Button transparent onPress={() => this.props.fetchPosts()}>
-            <Icon name="ios-refresh" />
-          </Button>
-          <Button transparent onPress={() => this.navigateTo('newItem')}>
-            <Icon name="ios-add-circle-outline" />
-          </Button>
-
-          <Title>{(this.props.name) ? this.props.name : 'Home'}</Title>
-
-          <Button transparent onPress={this.props.openDrawer}>
-            <Icon name="ios-menu" />
-          </Button>
-        </Header>
-        <Content>
-          {content}
-        </Content>
-      </Container>
+      <View>
+        {content}
+      </View>
     );
   }
 }
