@@ -1,14 +1,14 @@
 
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity, Modal  } from 'react-native';
 import { connect } from 'react-redux';
 import Dimensions from 'Dimensions';
 
 import NoItems from '../common/NoItemContentMsg';
 import myTheme from '../../themes/base-theme';
+import { syncPosts, fetchPosts } from '../../actions/post';
 import styles from './styles';
 import Swiper from '../swipeCards/swiper';
-import Card from '../swipeCards/card';
 
 class Home extends Component {
 
@@ -19,7 +19,7 @@ class Home extends Component {
     replaceOrPushRoute: React.PropTypes.func,
     setIndex: React.PropTypes.func,
     name: React.PropTypes.string,
-    list: React.PropTypes.arrayOf(React.PropTypes.string),
+    // list: React.PropTypes.arrayOf(React.PropTypes.string),
   }
 
   constructor(props) {
@@ -27,13 +27,28 @@ class Home extends Component {
     this.state = { list: props.list, page: 'home' };
   }
 
+  componentDidMount() {
+    var db = firebase.database();
+    var ref = db.ref("posts");
+    ref.on("value", function(snapshot) {
+      // this.state({list: snapshot.val()})
+      // this.props.fetchPosts();
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
+    this.props.fetchPosts();
+  }
+
+  shouldComponentUpdate(props, state) {
+    return false;
+  }
+
   handleYup() {
-    console.log(this);
+    // this.props.fetchPosts();
     console.log('YES');
   }
 
   handleNope() {
-    console.log(this);
     console.log('NO');
   }
 
@@ -54,9 +69,11 @@ class Home extends Component {
         renderNoMoreCards={() => <NoItems><Text>Empty</Text></NoItems>}
         handleYup={this.handleYup}
         handleNope={this.handleNope}
-      />);
+      >
+      test
+      </Swiper>);
 
-    const mainContent = this.state.page === 'home' ? <NoItems><Text>Empty</Text></NoItems> : <NoItems><Text>Empty</Text></NoItems>;
+    const mainContent = this.state.page === 'nav.home' ? swiper : (<Text>Not A Home</Text>);
 
     return (
       <View style={{ flex: 1 }} theme={myTheme} >
@@ -68,7 +85,6 @@ class Home extends Component {
   }
 }
 
-
 function bindAction() {
   return {};
 }
@@ -76,7 +92,8 @@ function bindAction() {
 function mapStateToProps(state) {
   return {
     name: state.user.name,
-    list: state.list.list,
+    posts: state.posts.posts,
+    list: state.posts.posts,
   };
 }
 

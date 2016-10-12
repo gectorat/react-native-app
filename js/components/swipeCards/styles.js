@@ -6,14 +6,21 @@ module.exports = StyleSheet.create({
   mainContainer: {
     margin: 20,
   },
+  name: {
+    flex: 0.4
+  },
   companyName: {
-    marginLeft: 80,
+    alignSelf: 'stretch'
+  },
+  location: {
+    fontSize: 12,
+    alignSelf: 'stretch',
+    fontFamily: 'HelveticaNeue-Light'
   },
   headSection: {
-    flexDirection: 'row',
     borderBottomColor: '#d6d7da',
     paddingBottom: 15,
-    borderBottomWidth: 1
+    borderBottomWidth: 2
   },
   title: {
     marginTop: 40
@@ -24,5 +31,10 @@ module.exports = StyleSheet.create({
   image: {
     width: 300,
     height: 300
+  },
+  card: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 })

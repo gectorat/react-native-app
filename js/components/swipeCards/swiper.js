@@ -7,23 +7,28 @@ import {
     Text,
     View,
     Animated,
+    Easing,
     PanResponder,
     Image
 } from 'react-native';
 
 import clamp from 'clamp';
+import Card from '../swipeCards/card';
+import Dimensions from 'Dimensions';
+import styles from './styles';
 
 var SWIPE_THRESHOLD = 120;
 
 class SwipeCards extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0),
       card: this.props.cards ? this.props.cards[0] : null,
     }
+    this.isLiked = this.isLiked.bind(this);
+    this.isMoved = this.isMoved.bind(this);
   }
 
   _goToNextCard() {
@@ -32,10 +37,62 @@ class SwipeCards extends Component {
     let card = newIdx > this.props.cards.length - 1
       ? this.props.loop ? this.props.cards[0] : null
       : this.props.cards[newIdx];
-
     this.setState({
       card: card
     });
+  }
+
+  isLiked() {
+    Animated.spring(this.state.pan, {
+            toValue: {x: -300, y: 0},
+            // delay: 300,
+          }).start(
+          () => {
+            this._goToNextCard();
+            Animated.spring(this.state.pan, {
+              toValue: {x: 0, y: 0},
+              friction: 3.9
+            }).start();
+          }
+          );
+    // Animated.timing(
+    //   this.state.enter,
+    //   { 
+    //     toValue:  0, 
+    //     delay: 300,
+    //     duretion: 500,
+    //     easing: Easing.linear
+    //   }
+    // ).start(()=>{
+    //   this._goToNextCard();
+    //   this._animateEntrance();
+    // }); 
+  }
+  isMoved() {
+        Animated.spring(this.state.pan, {
+            toValue: {x: 300, y: 0},
+            // delay: 300,
+          }).start(
+          () => {
+            this._goToNextCard();
+            Animated.spring(this.state.pan, {
+              toValue: {x: 0, y: 0},
+              friction: 3.9
+            }).start();
+          }
+          );
+    // Animated.timing(
+    //   this.state.enter,
+    //   { 
+    //     toValue:  0, 
+    //     delay: 300,
+    //     duretion: 500,
+    //     easing: Easing.linear
+    //   }
+    // ).start(()=>{
+    //   this._goToNextCard();
+    //   this._animateEntrance();
+    // }); 
   }
 
   componentDidMount() {
@@ -135,7 +192,7 @@ class SwipeCards extends Component {
 
   render() {
     let { pan, enter, } = this.state;
-
+    const { height, width } = Dimensions.get('window');
     let [translateX, translateY] = [pan.x, pan.y];
 
     // let rotate = pan.x.interpolate({inputRange: [-200, 0, 200], outputRange: ["-30deg", "0deg", "30deg"]});
@@ -151,13 +208,21 @@ class SwipeCards extends Component {
     // let nopeOpacity = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0]});
     // let nopeScale = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0.5], extrapolate: 'clamp'});
     // let animatedNopeStyles = {transform: [{scale: nopeScale}], opacity: nopeOpacity}
-
+    // const cardData = [title: this.state.card.title, body: this.state.card.body]
+    // console.log(cardData)
         return (
             <View style={this.props.containerStyle}>
                 { this.state.card
                     ? (
                     <Animated.View style={[this.props.cardStyle, animatedCardstyles]} {...this._panResponder.panHandlers}>
-                        {this.renderCard(this.state.card)}
+                      <Card
+                        width={width}
+                        height={height}
+                        stylesCard={styles.card}
+                        // data={this.state.card}
+                        isLiked={this.isLiked}
+                        isMoved={this.isMoved}
+                      >{this.state.card}</Card>
                     </Animated.View>
                 )
                     : this.renderNoMoreCards() }

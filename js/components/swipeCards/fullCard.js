@@ -8,31 +8,27 @@ import {
   Icon,
   Header
 } from 'native-base';
-import { Image,TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
+import { Image,TouchableHighlight,TouchableWithoutFeedback,Modal,ScrollView } from 'react-native';
 import Gallery from '../common/Gallery';
-import FullCard from './fullCard';
 import styles from './styles';
 export default class Card extends Component {
   constructor() {
     super();
-    this.state = {visible: false}
-    this.setFullCardVisible = this.setFullCardVisible.bind(this);
+    this.isLikedOnModal = this.isLikedOnModal.bind(this);
+    this.isMovedOnModal = this.isMovedOnModal.bind(this);
   }
-  setFullCardVisible() {
-    if (this.state.visible) {
-      this.setState({visible: false});
-    } else {
-      this.setState({visible: true});
-    }
+  isLikedOnModal() {
+    this.props.setFullCardVisible();
+    this.props.isLiked();
+  }
+  isMovedOnModal() { 
+    this.props.setFullCardVisible();
+    this.props.isMoved();
   }
   render() {
-    console.log(this.props.children)
     return (
-      <TouchableWithoutFeedback onPress={this.setFullCardVisible}>
-        <View>
-          <View style={[this.props.stylesCard, {width: 0.9 * this.props.width, 
-            height: 0.85 * this.props.height, 
-            borderRadius: 8,  borderWidth: 1.5, borderColor: '#d6d7da', backgroundColor: '#fff'}]}>
+      <Modal visible={this.props.visible} animationType={'slide'}>
+          <ScrollView style={this.props.stylesCard}>
               <Container style={styles.mainContainer}>
                 <Content>
                   <View style={styles.headSection}>
@@ -60,19 +56,13 @@ export default class Card extends Component {
                   </View>
                 </Content>
               </Container>
+              </ScrollView>
               <View style={{marginLeft: 10, marginRight: 10, flexDirection: 'row'}}>
-                <Icon style={{flex: 0.4, color: "#4F8EF7"}} onPress={this.props.isLiked} name="ios-heart-outline" />
-                <Icon style={{flex: 0.4, color: "#4F8EF7"}} name="ios-chatboxes-outline" />
-                <Icon style={{color: "#4F8EF7"}} onPress={this.props.isMoved} name="ios-paper-outline" />
+                <Icon style={{flex: 0.4, color: "#4F8EF7"}} onPress={this.isLikedOnModal} name="ios-heart-outline" />
+                <Icon style={{flex: 0.4, color: "#60938a"}} name="ios-chatboxes-outline" />
+                <Icon style={{color: "#4F8EF7"}} onPress={this.isMovedOnModal} name="ios-paper-outline" />
               </View>
-          </View>
-          <FullCard 
-            isLiked={this.props.isLiked}
-            isMoved={this.props.isMoved} 
-            setFullCardVisible={this.setFullCardVisible} 
-            visible={this.state.visible}>{this.props.children}</FullCard>
-        </View>
-      </TouchableWithoutFeedback>
+      </Modal>
     )
   }
 }
