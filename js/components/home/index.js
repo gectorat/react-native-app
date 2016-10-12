@@ -1,7 +1,8 @@
 
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Modal  } from 'react-native';
+import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
 import Dimensions from 'Dimensions';
 
 import NoItems from '../common/NoItemContentMsg';
@@ -13,13 +14,10 @@ import Swiper from '../swipeCards/swiper';
 class Home extends Component {
 
   static propTypes = {
-    openDrawer: React.PropTypes.func,
-    closeDrawer: React.PropTypes.func,
-    replaceRoute: React.PropTypes.func,
-    replaceOrPushRoute: React.PropTypes.func,
-    setIndex: React.PropTypes.func,
+    fetchPosts: React.PropTypes.func,
+    syncPosts: React.PropTypes.func,
     name: React.PropTypes.string,
-    // list: React.PropTypes.arrayOf(React.PropTypes.string),
+    list: React.PropTypes.arrayOf(React.PropTypes.object),
   }
 
   constructor(props) {
@@ -28,14 +26,13 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    var db = firebase.database();
-    var ref = db.ref("posts");
-    ref.on("value", function(snapshot) {
+    const db = firebase.database();
+    const ref = db.ref('posts');
+    ref.on('value', snapshot => {
       // this.state({list: snapshot.val()})
       // this.props.fetchPosts();
-    }, function (errorObject) {
-      console.log("The read failed: " + errorObject.code);
-    });
+    }, errorObject => console.log(`The read failed: ${errorObject.code}`));
+
     this.props.fetchPosts();
   }
 
@@ -73,7 +70,7 @@ class Home extends Component {
       test
       </Swiper>);
 
-    const mainContent = this.state.page === 'nav.home' ? swiper : (<Text>Not A Home</Text>);
+    const mainContent = this.state.page === 'home' ? swiper : (<Text>Not A Home</Text>);
 
     return (
       <View style={{ flex: 1 }} theme={myTheme} >
@@ -85,8 +82,11 @@ class Home extends Component {
   }
 }
 
-function bindAction() {
-  return {};
+function bindAction(dispatch) {
+  return {
+    syncPosts: () => dispatch(syncPosts()),
+    fetchPosts: () => dispatch(fetchPosts()),
+  };
 }
 
 function mapStateToProps(state) {

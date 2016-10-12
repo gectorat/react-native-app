@@ -1,22 +1,14 @@
 
 import React, { Component } from 'react';
-import { TouchableOpacity, Image, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { connect } from 'react-redux';
 import {
-  Container,
   View,
-  Header,
-  Title,
-  Content,
   Text,
-  Button,
   List,
   ListItem,
-  Icon } from 'native-base';
+   } from 'native-base';
 import NoItems from '../common/NoItemContentMsg';
-import { openDrawer, closeDrawer } from '../../actions/drawer';
-import { replaceRoute, replaceOrPushRoute } from '../../actions/route';
-import { setIndex } from '../../actions/list';
 import { syncPosts, fetchPosts } from '../../actions/post';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
@@ -74,12 +66,7 @@ class Home extends Component {
 function bindAction(dispatch) {
   return {
     fetchPosts: () => dispatch(fetchPosts()),
-    syncPosts: () => dispatch(syncPosts()),
-    openDrawer: () => dispatch(openDrawer()),
-    closeDrawer: () => dispatch(closeDrawer()),
-    replaceRoute: route => dispatch(replaceRoute(route)),
-    replaceOrPushRoute: route => dispatch(replaceOrPushRoute(route)),
-    setIndex: index => dispatch(setIndex(index)),
+    syncPosts: () => dispatch(syncPosts())
   };
 }
 
