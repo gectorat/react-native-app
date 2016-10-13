@@ -10,6 +10,7 @@ import myTheme from '../../themes/base-theme';
 import { syncPosts, fetchPosts } from '../../actions/post';
 import styles from './styles';
 import Swiper from '../swipeCards/swiper';
+import Card from '../swipeCards/card';
 
 class Home extends Component {
 
@@ -22,7 +23,7 @@ class Home extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { list: props.list, page: 'home' };
+    this.state = { posts: props.posts, page: 'home' };
   }
 
   componentDidMount() {
@@ -30,18 +31,13 @@ class Home extends Component {
     const ref = db.ref('posts');
     ref.on('value', snapshot => {
       // this.state({list: snapshot.val()})
-      // this.props.fetchPosts();
+      this.props.fetchPosts();
     }, errorObject => console.log(`The read failed: ${errorObject.code}`));
 
     this.props.fetchPosts();
   }
 
-  shouldComponentUpdate(props, state) {
-    return false;
-  }
-
   handleYup() {
-    // this.props.fetchPosts();
     console.log('YES');
   }
 
@@ -54,7 +50,7 @@ class Home extends Component {
     const swiper = (
       <Swiper
         containerStyle={styles.cardContainer}
-        cards={this.state.list}
+        cards={this.props.posts}
         renderCard={cardData => (
           <Card
             width={width}
@@ -63,7 +59,7 @@ class Home extends Component {
             data={cardData}
           />
         )}
-        renderNoMoreCards={() => <NoItems><Text>Empty</Text></NoItems>}
+        renderNoMoreCards={() => <NoItems><Text>No More Cards</Text></NoItems>}
         handleYup={this.handleYup}
         handleNope={this.handleNope}
       >
