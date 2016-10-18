@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  Container,
-  Content,
-  Title,
-  Icon,
-  Header
-} from 'native-base';
+import { Icon, Text, View} from 'native-base';
 import { Image,TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
 import Gallery from '../common/Gallery';
 import FullCard from './fullCard';
@@ -26,15 +18,14 @@ export default class Card extends Component {
     }
   }
   render() {
-    console.log(this.props.children)
     return (
       <TouchableWithoutFeedback onPress={this.setFullCardVisible}>
         <View>
           <View style={[this.props.stylesCard, {width: 0.9 * this.props.width, 
             height: 0.85 * this.props.height, 
             borderRadius: 8,  borderWidth: 1.5, borderColor: '#d6d7da', backgroundColor: '#fff'}]}>
-              <Container style={styles.mainContainer}>
-                <Content>
+              <View style={styles.mainContainer}>
+                <View>
                   <View style={styles.headSection}>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={styles.name}>Ivan Dorohov</Text>
@@ -58,8 +49,8 @@ export default class Card extends Component {
                     </View>
                     <Gallery data={this.props.children.photos} />
                   </View>
-                </Content>
-              </Container>
+                </View>
+              </View>
               <View style={{marginLeft: 10, marginRight: 10, flexDirection: 'row'}}>
                 <Icon style={{flex: 0.4, color: "#4F8EF7"}} onPress={this.props.isLiked} name="ios-heart-outline" />
                 <Icon style={{flex: 0.4, color: "#4F8EF7"}} name="ios-chatboxes-outline" />

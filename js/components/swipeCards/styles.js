@@ -5,6 +5,9 @@ const { StyleSheet } = React;
 module.exports = StyleSheet.create({
   mainContainer: {
     margin: 20,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   name: {
     flex: 0.4

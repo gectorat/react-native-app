@@ -192,6 +192,8 @@ export default {
   tabBgColor: '#F8F8F8',
   tabFontSize: 15,
   tabTextColor: '#000',
+  tabFontFamilyBold: 'HelveticaNeue-Medium',
+  tabFontFamilyNormal: 'HelveticaNeue-Light',  
 
 
   // Text

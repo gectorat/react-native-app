@@ -5,8 +5,9 @@ import {
   Image,
   Alert
 } from 'react-native';
-import { View as RawView } from 'react-native';
+import { View as RawView, ListView, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
+import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import {
   Container,
   Content,
@@ -44,7 +45,11 @@ class Home extends Component {
 
   constructor() {
     super();
-    this.state = { description: '' }
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.state = {
+          basic: true,
+          listViewData: Array(20).fill('').map((_,i)=>`item #${i}`)
+        };  
   }
 
   componentDidMount() {
@@ -54,19 +59,49 @@ class Home extends Component {
   render() {
 
     const { posts, isEditing } = this.props.posts;
-    const mockText = 'NativeBase is a free and open source framework that enables developers to build high-quality mobile apps using React Native iOS and Android apps with a fusion of ES6.';
+    const mockText = 'Продам автомобиль Peugeot 207 + 2 комплекта резины';
     return (
       <Container theme={myTheme} style={styles.container}>
         <Header>
           <Button transparent onPress={() => this.props.popRoute()}>
             <Icon name="ios-arrow-back" />
           </Button>
-          <Title>Tab Menu</Title>
+          <Title>Cards</Title>
         </Header>
-        <Content style={{backgroundColor:'#000'}}>
+        <View style={{backgroundColor:'#fff'}}>
           <Tabs>
             <View tabLabel='Home'>
-              <RawView style={{backgroundColor:'#000'}}>
+  {
+          this.state.basic &&
+          <SwipeListView
+            dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+            renderRow={ data => (
+              <TouchableHighlight
+                onPress={ _ => console.log('You touched me') }
+                style={styles.rowFront}
+                underlayColor={'#AAA'}
+              >
+                <View>
+                  <Text>I'm {data} in a SwipeListView</Text>
+                </View>
+              </TouchableHighlight>
+            )}
+            renderHiddenRow={ (data, secId, rowId, rowMap) => (
+              <View style={styles.rowBack}>
+                <Text>Left</Text>
+                <View style={[styles.backRightBtn, styles.backRightBtnLeft]}>
+                  <Text style={styles.backTextWhite}>Right</Text>
+                </View>
+                <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={ _ => this.deleteRow(secId, rowId, rowMap) }>
+                  <Text style={styles.backTextWhite}>Delete</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            leftOpenValue={75}
+            rightOpenValue={-150}
+          />
+        }
+              <RawView>
                 <TabCard>
                   {mockText}
                 </TabCard>
@@ -84,7 +119,7 @@ class Home extends Component {
             </View>
 
             <View tabLabel="Menu">
-              <RawView style={{backgroundColor:'#000'}}>
+              <RawView>
                 <Card>
                   <CardItem cardBody>
                     <Text>
@@ -115,7 +150,7 @@ class Home extends Component {
               </RawView>
             </View>
           </Tabs>
-        </Content>
+        </View>
       </Container>
     );
   }

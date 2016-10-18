@@ -11,7 +11,7 @@ class TabCard extends Component {
     return (
       <Card>
         <CardItem>
-          <Text>
+          <Text style={{fontFamily: 'HelveticaNeue-Light'}}>
             {this.props.children}
           </Text>
         </CardItem>
