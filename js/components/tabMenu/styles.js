@@ -36,5 +36,14 @@ module.exports = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF'
-  }
+  },
+
+    backRightBtn: {
+    alignItems: 'center',
+    bottom: 0,
+    right: 30,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 30,
+  },
 });

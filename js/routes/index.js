@@ -60,7 +60,7 @@ export function getRenderedRouteScene(route) {
         case 'login' :
           return <Login />;
         case 'card.list' :
-          return <CardList />;
+          return <TabMenu />;
         case 'card.cards' :
           return <TabMenu />;
         case 'card.create' :

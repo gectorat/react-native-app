@@ -5,7 +5,7 @@ import {
   Image,
   Alert
 } from 'react-native';
-import { View as RawView, ListView, TouchableHighlight } from 'react-native';
+import { View as RawView, ListView, TouchableHighlight, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import {
@@ -47,75 +47,78 @@ class Home extends Component {
     super();
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-          basic: true,
+      renderPlaceholderOnly: true,
           listViewData: Array(20).fill('').map((_,i)=>`item #${i}`)
         };  
   }
 
+  deleteRow(secId, rowId, rowMap) {
+    rowMap[`${secId}${rowId}`].closeRow();
+    const newData = [...this.state.listViewData];
+    newData.splice(rowId, 1);
+    this.setState({listViewData: newData});
+  }
+
   componentDidMount() {
-    // this.props.fetchPosts();
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({renderPlaceholderOnly: false});
+    });
+  }
+
+  _renderPlaceholderView() {
+    return (
+      <View>
+        <Text>Ша все будет чики-пики</Text>
+      </View>
+    );
   }
 
   render() {
+    if (this.state.renderPlaceholderOnly) {
+      return this._renderPlaceholderView();
+    }
 
     const { posts, isEditing } = this.props.posts;
-    const mockText = 'Продам автомобиль Peugeot 207 + 2 комплекта резины';
+    Object.keys(posts).map(function (key) { return posts[key]; });
+
     return (
       <Container theme={myTheme} style={styles.container}>
-        <Header>
-          <Button transparent onPress={() => this.props.popRoute()}>
-            <Icon name="ios-arrow-back" />
-          </Button>
-          <Title>Cards</Title>
-        </Header>
         <View style={{backgroundColor:'#fff'}}>
           <Tabs>
             <View tabLabel='Home'>
-  {
-          this.state.basic &&
+ 
           <SwipeListView
-            dataSource={this.ds.cloneWithRows(this.state.listViewData)}
-            renderRow={ data => (
-              <TouchableHighlight
-                onPress={ _ => console.log('You touched me') }
-                style={styles.rowFront}
-                underlayColor={'#AAA'}
+            dataSource={this.ds.cloneWithRows(posts)}
+            renderRow={ (data, secId, rowId, rowMap) => (
+              <SwipeRow
+                disableLeftSwipe={true}
               >
-                <View>
-                  <Text>I'm {data} in a SwipeListView</Text>
+                <View style={styles.rowBack}>
+                  <Text>Left</Text>
                 </View>
-              </TouchableHighlight>
+                <TouchableOpacity
+                  onPress={ _ => console.log('You touched me') }
+                  style={styles.rowFront}
+                  underlayColor={'#AAA'}
+                >
+                  <RawView>
+                <TabCard>
+                  {data.title}
+                </TabCard>
+              </RawView>
+                </TouchableOpacity>
+              </SwipeRow>
             )}
             renderHiddenRow={ (data, secId, rowId, rowMap) => (
-              <View style={styles.rowBack}>
-                <Text>Left</Text>
-                <View style={[styles.backRightBtn, styles.backRightBtnLeft]}>
-                  <Text style={styles.backTextWhite}>Right</Text>
-                </View>
                 <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={ _ => this.deleteRow(secId, rowId, rowMap) }>
-                  <Text style={styles.backTextWhite}>Delete</Text>
+<Icon style={{color: "#000"}} name="ios-trash-outline" />
                 </TouchableOpacity>
-              </View>
             )}
             leftOpenValue={75}
-            rightOpenValue={-150}
+            disableRightSwipe={true}
+            rightOpenValue={-75}
           />
-        }
-              <RawView>
-                <TabCard>
-                  {mockText}
-                </TabCard>
-                <TabCard>
-                  {mockText}
-                </TabCard>
-                <TabCard>
-                  {mockText}
-                </TabCard>
-                <TabCard>
-                  {mockText}
-                </TabCard>
 
-              </RawView>
             </View>
 
             <View tabLabel="Menu">
@@ -145,7 +148,7 @@ class Home extends Component {
                     title:"Tab Header"
                   }}
                   actionMenu={true}>
-                  {mockText}
+                  {'mockText'}
                 </TabCardComplex>
               </RawView>
             </View>

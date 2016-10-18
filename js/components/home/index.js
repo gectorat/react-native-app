@@ -27,13 +27,6 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const db = firebase.database();
-    const ref = db.ref('posts');
-    ref.on('value', snapshot => {
-      // this.state({list: snapshot.val()})
-      this.props.fetchPosts();
-    }, errorObject => console.log(`The read failed: ${errorObject.code}`));
-
     this.props.fetchPosts();
   }
 
